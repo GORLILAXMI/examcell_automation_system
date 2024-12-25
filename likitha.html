@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Cell Automation System</title>
+</head>
+<marquee behaviour="slide" bgcolor="PINK"><B>SESHADRI RAO GUDLAVALLERU ENGINEERING COLLEGE</B></marquee>
+
+<body>
+    <h1>Exam Cell Automation System</h1>
+
+    <img src="srgec.jpg" align="right" width=500 height=200 /> <!-- Login Form -->
+    <form id="loginForm">
+        <label for="loginType">Select Login Type:</label>
+        <select id="loginType">
+            <option value="admin">Admin</option>
+            <option value="staff">Staff</option>
+            <option value="student">Student</option>
+        </select><br>
+        <label for="username">Username:</label>
+        <input type="text" id="username"><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password"><br>
+        <button type="button" onclick="login()">Login</button>
+    </form>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel" style="display: none;">
+        <h2>Admin Panel</h2>
+        <div id="adminInputs">
+            <label for="hallTicketRange">Hall Ticket Number Range:</label>
+            <input type="text" id="hallTicketRange"><br>
+            <label for="roomNumber">Room Number:</label>
+            <input type="text" id="roomNumber"><br>
+            <label for="invigilator">Invigilator:</label>
+            <input type="text" id="invigilator"><br>
+            <button type="button" onclick="submitData()">Submit</button>
+            <button type="button" onclick="clearData()">Clear</button>
+        </div>
+        <div id="adminOutput"></div>
+        <button type="button" onclick="schedule()">Schedule</button>
+    </div>
+
+    <!-- Staff Panel -->
+    <div id="staffPanel" style="display: none;">
+        <h2>Staff Panel</h2>
+        <p id="staffDetails"></p>
+    </div>
+
+    <!-- Student Panel -->
+    <div id="studentPanel" style="display: none;">
+        <h2>Student Panel</h2>
+        <p id="studentDetails"></p>
+    </div>
+
+    <script>
+        var roomCounter = 1;
+        var scheduledRooms = [];
+
+        // Load scheduled rooms from localStorage if available
+        if (localStorage.getItem("scheduledRooms")) {
+            scheduledRooms = JSON.parse(localStorage.getItem("scheduledRooms"));
+        }
+
+        function login() {
+            var loginType = document.getElementById("loginType").value;
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+
+            // Clear all panels
+            document.getElementById("adminPanel").style.display = "none";
+            document.getElementById("staffPanel").style.display = "none";
+            document.getElementById("studentPanel").style.display = "none";
+
+            // Perform login validation here
+            if (username === "" || password === "") {
+                alert("Please enter both username and password.");
+                return;
+            }
+
+            // For demonstration purpose, showing different panels based on login type
+            if (loginType === "admin" && username === "admin" && password === "admin123") {
+                document.getElementById("adminPanel").style.display = "block";
+            } else if (loginType === "staff" && username === "staff" && password === "staff123") {
+                document.getElementById("staffPanel").style.display = "block";
+                displayStaffDetails(); // Display staff details when logged in as staff
+            } else if (loginType === "student" && username === "student" && password === "student123") {
+                document.getElementById("studentPanel").style.display = "block";
+                displayStudentDetails(); // Display student details when logged in as a student
+            } else {
+                alert("Invalid username or password.");
+            }
+        }
+
+        function submitData() {
+            var hallTicketRange = document.getElementById("hallTicketRange").value;
+            var roomNumber = document.getElementById("roomNumber").value;
+            var invigilator = document.getElementById("invigilator").value;
+
+            scheduledRooms.push({
+                hallTicketRange: hallTicketRange,
+                roomNumber: roomNumber,
+                invigilator: invigilator
+            });
+
+            localStorage.setItem("scheduledRooms", JSON.stringify(scheduledRooms));
+
+            displayAdminData();
+        }
+
+        function clearData() {
+            scheduledRooms = [];
+            localStorage.removeItem("scheduledRooms");
+            document.getElementById("adminOutput").innerHTML = "";
+        }
+
+        function displayAdminData() {
+            var adminOutput = "";
+            for (var i = 0; i < scheduledRooms.length; i++) {
+                adminOutput += "Hall Ticket Range: " + scheduledRooms[i].hallTicketRange + ", Room Number: " + scheduledRooms[i].roomNumber + ", Invigilator: " + scheduledRooms[i].invigilator + "<br>";
+            }
+            document.getElementById("adminOutput").innerHTML = adminOutput;
+        }
+
+        function schedule() {
+            // Implement scheduling logic here
+            alert("Rooms scheduled successfully!");
+
+            // Clear room inputs after scheduling
+            document.getElementById("adminInputs").reset();
+        }
+
+        function displayStaffDetails() {
+            var staffDetails = "";
+            for (var i = 0; i < scheduledRooms.length; i++) {
+                staffDetails += "Room Number: " + scheduledRooms[i].roomNumber + ", Invigilator: " + scheduledRooms[i].invigilator + "<br>";
+            }
+            document.getElementById("staffDetails").innerHTML = staffDetails;
+        }
+
+        function displayStudentDetails() {
+            var studentDetails = "";
+            for (var i = 0; i < scheduledRooms.length; i++) {
+                studentDetails += "Hall Ticket Range: " + scheduledRooms[i].hallTicketRange + ", Room Number: " + scheduledRooms[i].roomNumber + "<br>";
+            }
+            document.getElementById("studentDetails").innerHTML = studentDetails;
+        }
+    </script>
+    <h1><b>TIME TABLE(II BTech-I Semester)</b></h1>
+    <table border=1>
+        <tr>
+            <th><b>DATE&DAY</b></th>
+            <th><b>CE</b></th>
+            <th><b>EEE</b></th>
+            <th><b>ME</b></th>
+            <th><b>ECE</b></th>
+            <th><b>IOT</b></th>
+            <th><b>CSE</b></th>
+            <th><b>AIDS</b></th>
+            <th><b>AIML</b></th>
+            <th><b>IT</b></th>
+        </tr>
+        <tr>
+            <td>23.02.2024(friday)</td>
+            <td>Building Materials And Building Construction</td>
+            <td>Python programming</td>
+            <td>Python programming</td>
+            <td>Probability and Statistics</td>
+            <td>Analog Devices and Circuits</td>
+            <td>Managerial Econpmics And Finance Analysis</td>
+            <td>Managerial Econpmics And Finance Analysis</td>
+            <td>Managerial Econpmics And Finance Analysis</td>
+            <td>Managerial Econpmics And Finance Analysis</td>
+        </tr>
+        <tr>
+
+            <td>24.02.2024(saturday)</td>
+            <td>Mechanics of Solids</td>
+            <td>Cicuit Theory</td>
+            <td>Elements of Electronic and Electrical Engineering</td>
+            <td>Semiconductor Devicesband Circuits</td>
+            <td>Principals Of Communication System</td>
+            <td>Digital Logic Design</td>
+            <td>Digital Logic Design</td>
+            <td>Digital Logic Design</td>
+            <td>Digital Logic Design</td>
+        </tr>
+        <tr>
+
+            <td>26.02.2024(monday)</td>
+            <td>Fluid Mechanics</td>
+            <td>Control System</td>
+            <td>Engineering Thermidynamics</td>
+            <td>Signals and System</td>
+            <td>Electronic Instruments</td>
+            <td>Object Oriented Programming Through Java</td>
+            <td>Object Oriented Programming Through Java</td>
+            <td>Object Oriented Programming Through Java</td>
+            <td>Object Oriented Programming Through Java</td>
+        </tr>
+        <tr>
+            <td>27.02.2024(tuesday)</td>
+            <td>Surveying</td>
+            <td>DC Mechanics</td>
+            <td>Kinematics of Mechanics</td>
+            <td>Electro Magnetic Field Theory</td>
+            <td>Probability and Statistics</td>
+            <td>Probability and Statistics</td>
+            <td>Automata Theory</td>
+            <td>Automata Theory</td>
+            <td>Automata Theory</td>
+        </tr>
+        <tr>
+            <td>28.02.2024(wednesday)</td>
+            <td>Electronic Devices and Circuits</td>
+            <td>Mechanics of Solids</td>
+            <td>Digital Circuit Design</td>
+            <td>Data Structures</td>
+            <td>Database Management System</td>
+            <td>Database Management System</td>
+            <td>Database Management System</td>
+            <td>Database Management System</td>
+            <td>Database Management System</td>
+        </tr>
+    </table>
+</body>
+
+</html>
